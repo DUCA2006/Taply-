@@ -1,4 +1,4 @@
-const SUPABASE_URL = "https://uidcjsffxgbvutmafero.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://uidcjsffxgbvutmafero.supabase.co";
 const SUPABASE_KEY = "sb_publishable_M6B_Tu9OdCBh6hpp6EKRGw_J_10xUSx";
 
 const form = document.getElementById("signupForm");
