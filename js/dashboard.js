@@ -133,7 +133,7 @@ async function createLink() {
         user_id: user.id,
         title: title,
         url: url,
-        position: Date.now()
+        position: 0
       })
     }
   );

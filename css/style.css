@@ -672,3 +672,130 @@ DASHBOARD
 .delete-link:hover {
   color: #fff;
 }
+
+
+
+
+/* =========================
+PUBLIC TAPLY PROFILE
+========================= */
+
+.profile-page {
+  min-height: 100vh;
+  background: #080808;
+}
+
+.public-profile {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 55px 20px 30px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-top {
+  text-align: center;
+}
+
+.public-avatar {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: 800;
+  overflow: hidden;
+}
+
+.public-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-top h1 {
+  font-size: 23px;
+  margin-bottom: 5px;
+}
+
+#profileUsername {
+  color: #777;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+#profileBio {
+  max-width: 450px;
+  margin: 0 auto;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.public-links {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-top: 35px;
+}
+
+.public-link {
+  width: 100%;
+  padding: 17px 20px;
+  background: #fff;
+  color: #000;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.public-link:active {
+  transform: scale(0.98);
+}
+
+.profile-loading {
+  text-align: center;
+  color: #666;
+  padding: 25px;
+  font-size: 13px;
+}
+
+.profile-footer {
+  margin-top: auto;
+  padding-top: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.taply-brand {
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.taply-brand span {
+  color: #777;
+}
+
+.join-taply {
+  color: #777;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.join-taply:hover {
+  color: #fff;
+}
