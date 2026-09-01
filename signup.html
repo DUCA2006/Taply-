@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create your Taply</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="logo">taply<span>.</span></a>
+    <a href="login.html">Already have an account?</a>
+  </nav>
+  <main class="auth-page">
+<div class="auth-card">
+  <div class="auth-icon">✦</div>
+  <h1>Create your Taply</h1>
+  <p class="auth-subtitle">
+    Your world. Your links. One beautiful page.
+  </p>
+  <form id="signupForm">
+    <label>Username</label>
+    <div class="username-input">
+      <span>@</span>
+      <input
+        type="text"
+        id="username"
+        placeholder="yourname"
+        required
+        autocomplete="username"
+      >
+    </div>
+    <small>Your Taply will be: taply.vercel.app/<b>yourname</b></small>
+    <label>Email</label>
+    <input
+      type="email"
+      id="email"
+      placeholder="you@example.com"
+      required
+      autocomplete="email"
+    >
+    <label>Password</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Create a password"
+      minlength="6"
+      required
+      autocomplete="new-password"
+    >
+    <button type="submit" class="auth-button">
+      Create my Taply →
+    </button>
+    <p id="signupMessage" class="form-message"></p>
+  </form>
+  <p class="terms">
+    By creating an account, you agree to our Terms and Privacy Policy.
+  </p>
+</div>
+  </main>
+  <script src="js/auth.js"></script>
+</body>
+</html>
