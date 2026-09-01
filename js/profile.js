@@ -8,7 +8,23 @@ const profileAvatar = document.getElementById("profileAvatar");
 const publicLinks = document.getElementById("publicLinks");
 
 async function loadProfile() {
-  const username = new URLSearchParams(window.location.search).get("username");
+  // 1. Try getting username from URL parameter (?username=nelson)
+  let username = new URLSearchParams(window.location.search).get("username");
+
+  // 2. Fall back to clean URL path (/nelson)
+  if (!username) {
+    const segments = window.location.pathname.split("/").filter(Boolean);
+    const lastSegment = segments[segments.length - 1];
+
+    if (
+      lastSegment &&
+      lastSegment !== "profile.html" &&
+      lastSegment !== "index.html" &&
+      lastSegment !== "dashboard.html"
+    ) {
+      username = lastSegment;
+    }
+  }
 
   if (!username) {
     if (profileName) profileName.textContent = "Profile not found";

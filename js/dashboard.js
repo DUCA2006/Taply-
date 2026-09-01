@@ -8,7 +8,7 @@ if (!accessToken || !storedUser) {
   window.location.href = "login.html";
 }
 
-const user = JSON.parse(storedUser);
+const user = JSON.parse(storedUser || "{}");
 
 const addLinkButton = document.getElementById("addLinkButton");
 const linksContainer = document.getElementById("linksContainer");
@@ -18,6 +18,9 @@ const displayNameInput = document.getElementById("displayName");
 const bioInput = document.getElementById("bio");
 const saveProfileButton = document.getElementById("saveProfileButton");
 const profileMessage = document.getElementById("profileMessage");
+
+const myPublicLink = document.getElementById("myPublicLink");
+const previewButton = document.getElementById("previewButton");
 
 async function loadProfile() {
   try {
@@ -36,8 +39,22 @@ async function loadProfile() {
     const profiles = await response.json();
     if (profiles.length > 0) {
       const profile = profiles[0];
-      displayNameInput.value = profile.display_name || "";
-      bioInput.value = profile.bio || "";
+      if (displayNameInput) displayNameInput.value = profile.display_name || "";
+      if (bioInput) bioInput.value = profile.bio || "";
+
+      // CLEAN VERCEL URL FOR BIO SHARE
+      if (profile.username) {
+        const fullUrl = "https://taply-coral.vercel.app/" + profile.username;
+        
+        if (myPublicLink) {
+          myPublicLink.href = fullUrl;
+          myPublicLink.textContent = fullUrl;
+        }
+
+        if (previewButton) {
+          previewButton.href = fullUrl;
+        }
+      }
     }
   } catch (error) {
     console.error(error);
@@ -59,8 +76,10 @@ async function loadLinks() {
       }
     );
     const links = await response.json();
+    if (!linksContainer) return;
+
     linksContainer.innerHTML = "";
-    if (links.length === 0) {
+    if (!Array.isArray(links) || links.length === 0) {
       linksContainer.innerHTML = `
         <div class="empty-links">
           <div class="empty-icon">🔗</div>
@@ -70,6 +89,7 @@ async function loadLinks() {
       `;
       return;
     }
+
     links.forEach(function (link) {
       const linkElement = document.createElement("div");
       linkElement.className = "dashboard-link";
@@ -87,6 +107,7 @@ async function loadLinks() {
       `;
       linksContainer.appendChild(linkElement);
     });
+
     document.querySelectorAll(".delete-link").forEach(function (button) {
       button.addEventListener("click", function () {
         deleteLink(button.dataset.id);
@@ -94,17 +115,19 @@ async function loadLinks() {
     });
   } catch (error) {
     console.error(error);
-    linksContainer.innerHTML = `
-      <div class="empty-links">
-        <p>Could not load your links.</p>
-      </div>
-    `;
+    if (linksContainer) {
+      linksContainer.innerHTML = `
+        <div class="empty-links">
+          <p>Could not load your links.</p>
+        </div>
+      `;
+    }
   }
 }
 
 function escapeHtml(text) {
   const div = document.createElement("div");
-  div.textContent = text;
+  div.textContent = text || "";
   return div.innerHTML;
 }
 
@@ -133,7 +156,7 @@ async function createLink() {
         user_id: user.id,
         title: title,
         url: url,
-        position: 0
+        position: Math.floor(Date.now() / 1000)
       })
     }
   );
@@ -147,11 +170,33 @@ async function createLink() {
   loadLinks();
 }
 
-async function saveProfile() {
-  profileMessage.textContent = "Saving…";
+async function deleteLink(id) {
+  if (!confirm("Are you sure you want to delete this link?")) return;
 
-  const displayName = displayNameInput.value.trim();
-  const bio = bioInput.value.trim();
+  const response = await fetch(
+    SUPABASE_URL + "/rest/v1/links?id=eq." + id,
+    {
+      method: "DELETE",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + accessToken
+      }
+    }
+  );
+
+  if (!response.ok) {
+    alert("Could not delete link.");
+    return;
+  }
+
+  loadLinks();
+}
+
+async function saveProfile() {
+  if (profileMessage) profileMessage.textContent = "Saving…";
+
+  const displayName = displayNameInput ? displayNameInput.value.trim() : "";
+  const bio = bioInput ? bioInput.value.trim() : "";
 
   const response = await fetch(
     SUPABASE_URL +
@@ -173,22 +218,24 @@ async function saveProfile() {
   );
 
   if (!response.ok) {
-    profileMessage.textContent = "Could not save profile.";
+    if (profileMessage) profileMessage.textContent = "Could not save profile.";
     return;
   }
 
-  profileMessage.textContent = "Profile saved! 🎉";
+  if (profileMessage) profileMessage.textContent = "Profile saved! 🎉";
 }
 
-addLinkButton.addEventListener("click", createLink);
+if (addLinkButton) addLinkButton.addEventListener("click", createLink);
 
-saveProfileButton.addEventListener("click", saveProfile);
+if (saveProfileButton) saveProfileButton.addEventListener("click", saveProfile);
 
-logoutButton.addEventListener("click", function () {
-  localStorage.removeItem("taply_access_token");
-  localStorage.removeItem("taply_user");
-  window.location.href = "index.html";
-});
+if (logoutButton) {
+  logoutButton.addEventListener("click", function () {
+    localStorage.removeItem("taply_access_token");
+    localStorage.removeItem("taply_user");
+    window.location.href = "index.html";
+  });
+}
 
 loadProfile();
 loadLinks();
