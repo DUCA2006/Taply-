@@ -1,14 +1,95 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Taply</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-  
+  <nav class="dashboard-nav">
+<a href="index.html" class="logo">
+  taply<span>.</span>
+</a>
+<div class="dashboard-nav-right">
+  <a href="profile.html" class="preview-button">
+    View my Taply ↗
+  </a>
+  <button id="logoutButton" class="logout-button">
+    Log out
+  </button>
+</div>
+  </nav>
+  <main class="dashboard">
+<div class="dashboard-header">
+  <div>
+    <p class="dashboard-label">YOUR TAPLY</p>
+    <h1>Build your page.</h1>
+    <p class="dashboard-description">
+      Add your links and make your Taply yours.
+    </p>
+  </div>
+</div>
+<section class="dashboard-grid">
+  <!-- PROFILE SETTINGS -->
+  <div class="dashboard-card">
+    <div class="card-header">
+      <div>
+        <h2>Profile</h2>
+        <p>Tell people who you are.</p>
+      </div>
+    </div>
+    <div class="profile-form">
+      <div class="dashboard-avatar">
+        N
+      </div>
+      <div class="form-group">
+        <label>Display name</label>
+        <input
+          type="text"
+          id="displayName"
+          placeholder="Your name"
+        >
+      </div>
+      <div class="form-group">
+        <label>Bio</label>
+        <textarea
+          id="bio"
+          placeholder="Tell people something about you..."
+          rows="3"
+        ></textarea>
+      </div>
+      <button id="saveProfileButton" class="save-button">
+        Save profile
+      </button>
+      <p id="profileMessage" class="form-message"></p>
+    </div>
+  </div>
+  <!-- LINKS -->
+  <div class="dashboard-card">
+    <div class="card-header">
+      <div>
+        <h2>Your links</h2>
+        <p>Add everything you want to share.</p>
+      </div>
+      <button id="addLinkButton" class="add-button">
+        + Add link
+      </button>
+    </div>
+    <div id="linksContainer" class="links-container">
+      <div class="empty-links">
+        <div class="empty-icon">
+          🔗
+        </div>
+        <h3>No links yet</h3>
+        <p>
+          Add your first link to get started.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+  </main>
+  <script src="js/dashboard.js"></script>
 </body>
-
 </html>
