@@ -88,3 +88,54 @@ form.addEventListener("submit", async function (event) {
     message.textContent = error.message;
   }
 });
+
+
+
+
+
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+  loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    const loginMessage = document.getElementById("loginMessage");
+    loginMessage.textContent = "Logging you in...";
+    try {
+      const response = await fetch(
+        SUPABASE_URL + "/auth/v1/token?grant_type=password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password
+          })
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          data.msg ||
+          data.message ||
+          data.error_description ||
+          "Login failed."
+        );
+      }
+      localStorage.setItem("taply_access_token", data.access_token);
+      localStorage.setItem("taply_user", JSON.stringify(data.user));
+      loginMessage.textContent = "Login successful! 🎉";
+      setTimeout(function() {
+        window.location.href = "dashboard.html";
+      }, 800);
+    } catch (error) {
+      console.error(error);
+      loginMessage.textContent = error.message;
+    }
+  });
+}
