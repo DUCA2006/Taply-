@@ -22,6 +22,25 @@ const profileMessage = document.getElementById("profileMessage");
 const myPublicLink = document.getElementById("myPublicLink");
 const previewButton = document.getElementById("previewButton");
 
+/* =========================
+SOCIAL LINK DETECTION
+========================= */
+function getLinkIcon(url, title) {
+  const lowerUrl = (url || "").toLowerCase();
+  const lowerTitle = (title || "").toLowerCase();
+
+  if (lowerUrl.includes("instagram.com") || lowerTitle.includes("instagram")) return "◎";
+  if (lowerUrl.includes("tiktok.com") || lowerTitle.includes("tiktok")) return "♪";
+  if (lowerUrl.includes("wa.me") || lowerUrl.includes("whatsapp.com") || lowerTitle.includes("whatsapp")) return "◉";
+  if (lowerUrl.includes("x.com") || lowerUrl.includes("twitter.com") || lowerTitle === "x") return "𝕏";
+  if (lowerUrl.includes("facebook.com") || lowerTitle.includes("facebook")) return "f";
+  if (lowerUrl.includes("snapchat.com") || lowerTitle.includes("snapchat")) return "👻";
+  if (lowerUrl.includes("t.me") || lowerUrl.includes("telegram.me") || lowerTitle.includes("telegram")) return "➤";
+  if (lowerUrl.startsWith("mailto:") || lowerTitle.includes("email") || lowerTitle.includes("mail")) return "✉";
+
+  return "🔗";
+}
+
 async function loadProfile() {
   try {
     const response = await fetch(
@@ -91,16 +110,25 @@ async function loadLinks() {
     }
 
     links.forEach(function (link) {
+      const icon = getLinkIcon(link.url, link.title);
       const linkElement = document.createElement("div");
       linkElement.className = "dashboard-link";
+      linkElement.style.cssText = "display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 10px;";
+      
       linkElement.innerHTML = `
-        <div class="dashboard-link-info">
-          <strong>${escapeHtml(link.title)}</strong>
-          <span>${escapeHtml(link.url)}</span>
+        <div style="display: flex; align-items: center; gap: 14px; overflow: hidden;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; color: #fff;">
+            ${icon}
+          </div>
+          <div class="dashboard-link-info" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            <strong style="display: block; color: #fff; font-size: 15px; margin-bottom: 2px;">${escapeHtml(link.title)}</strong>
+            <span style="color: #888; font-size: 13px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(link.url)}</span>
+          </div>
         </div>
         <button
           class="delete-link"
           data-id="${link.id}"
+          style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #ff5555; padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; flex-shrink: 0;"
         >
           Delete
         </button>
